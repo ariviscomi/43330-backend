@@ -1,66 +1,54 @@
 class ProductManager {
 
-	products = [];
-	#id = 0;
-
-	constructor(title, description, price, thumbnail, code, stock) {
-		this.title = title,
-			this.description = description,
-			this.price = price,
-			this.thumbnail = thumbnail,
-			this.code = code,
-			this.stock = stock
+	constructor() {
+		this.products = [];
 	}
 
-	addProduct(title, desc, price, thumb, code, stock) {
+	addProduct(title, description, price, thumbnail, code, stock) {
 		console.log("\nAgregando un nuevo producto:");
 
-		let found=false;
+		const product = {
+			id : this.products.length + 1,
+			title : title,
+			description : description,
+			price : price,
+			thumbnail : thumbnail,
+			code : code,
+			stock : stock
+		};
 
-		if(typeof title === 'undefined' || typeof desc === 'undefined' || typeof price === 'undefined' || typeof thumb === 'undefined' || typeof code === 'undefined' || typeof stock === 'undefined'){
+		if (typeof title === undefined || typeof description === undefined || typeof price === undefined || typeof thumbnail === undefined || typeof code === undefined || typeof stock === undefined) {
 			console.warn("Todos los parametros son obligatorios!!");
-		}else{
-			this.products.forEach((prod) => {
-				if (code === prod.prod.code) {
-					found=true;
-				}
-			});
-			
-			if(!found){
-				const product = new ProductManager(title, desc, price, thumb, code, stock);
-				this.#id++;
-				this.products.push({id:this.#id,prod:product});
-				console.log("nuevo producto creado");
-			}
-			else{
-				console.warn("El codigo de producto ya existe, no se puede agregar el nuevo producto");
+		} else {
+			const prodFound = this.products.some((_item) => _item.code == code);
+			if (prodFound) {
+				console.log('Ya existe un producto con ese Codigo');
+			} else {
+				this.products.push(product);
+				console.log('Nuevo producto agregado!');
 			}
 		}
 	}
 
-	getProducts(){
+	getProducts() {
 		console.log("\nMostrando productos de la lista:")
-		if(this.products.length){
-			this.products.forEach((prod)=>{
-				console.log(prod.prod);
-			});
-		}else{
+		if (this.products.length) {
+			console.log(this.products);
+			return this.products;
+		} else {
 			console.warn("No hay productos en esta lista");
 		}
 	}
 
-	getProductById(id){
+	getProductById(id) {
 		console.log("\nBuscando producto:")
-		let found=false;
-		this.products.map((prod)=>{
-			if(prod.id === id){
-				found=true;
-				console.log("el producto que buscas es:");
-				console.log(prod);
-			}
-		});
-		
-		if(!found){console.error("Not Found")};
+		const product = this.products.find(prod => prod.id === id);
+		if (product == undefined) {
+			console.error("Not Found");
+		} else {
+			console.log('El producto que busca es este: ',product);
+			return product;
+		}
 	}
 }
 
