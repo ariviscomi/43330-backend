@@ -25,11 +25,9 @@ const readProduct = async () => {
 const findProduct = async () => {
 
 	try{
-
 	}
 
 	catch(error){
-
 	}
 }
 class ProductManager {
