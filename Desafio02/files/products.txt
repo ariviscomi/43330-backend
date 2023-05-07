@@ -1,0 +1,2 @@
+{"path":"./files/products.txt","id":1,"title":"mate montaña","description":"Mate con dibujo de montañas","price":1200,"thumbnail":"imagen","code":"aa022","stock":10}
+{"path":"./files/products.txt","id":1,"title":"mate termico","description":"Mate de acero termico","price":2000,"thumbnail":"imagen","code":"aa022","stock":30}
