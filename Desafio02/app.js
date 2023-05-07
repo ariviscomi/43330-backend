@@ -1,79 +1,50 @@
-const { Console } = require('console');
 const fs = require('fs');
 const format = 'utf-8';
 
-/* const writeProduct = async () => {
-
-	try {
-
-	}
-
-	catch (error) {
-
-	}
-}
-
-const readProduct = async () => {
-
-	try {
-
-	}
-
-	catch (error) {
-
-	}
-}
-
-const findProduct = async () => {
-
-	try {
-	}
-
-	catch (error) {
-	}
-} */
 class ProductManager {
 
 	constructor(path) {
 		this.path = path;
-		this.products=[];
-
-		fs.promises.writeFile(this.path,JSON.stringify(this.products));
-		console.log('Nuevo archivo creado');
+		fs.promises.writeFile(this.path,'');
 	}
 
 	addProduct = async (title, description, price, thumbnail, code, stock) => {
 
+		console.log('\nAgregando un nuevo producto:');
+
+		const product = {
+			id: 0,
+			title: title,
+			description: description,
+			price: price,
+			thumbnail: thumbnail,
+			code: code,
+			stock: stock
+		};
+
 		try {
+			console.log('leyendo archivo');
+		
+			let products = await fs.promises.readFile(this.path, format);
+			JSON.parse(products);
 
-			this.products = JSON.parse(await fs.promises.readFile(this.path,format));
-			
-			console.log('\nAgregando un nuevo producto:');
+			// product.id = products.length + 1;
 
-			const product = {
-				id: this.products.length + 1,
-				title: title,
-				description: description,
-				price: price,
-				thumbnail: thumbnail,
-				code: code,
-				stock: stock
-			};
-
-			if (typeof title === undefined || typeof description === undefined || typeof price === undefined || typeof thumbnail === undefined || typeof code === undefined || typeof stock === undefined) {
-				console.warn('Todos los parametros son obligatorios!!');
-			} else {
-				const prodFound = this.products.some((_item) => _item.code == code);
-				if (prodFound) {
-					console.warn('Ya existe un producto con ese Codigo');
-				} else {
-					await fs.promises.appendFile(this.path, JSON.stringify(product));
-					console.log('Nuevo producto agregado!');
-				}
-			}
+			await fs.promises.appendFile(this.path,JSON.stringify(product) + ',');
 		}
 
-		catch (err) { console.error('Algo Malio Sal :s') }
+		catch {
+			console.warn('no se pudo encontrar el archivo');
+			console.log('creando archivo');
+			try {
+				this.products.push(product);
+				await fs.promises.writeFile(this.path, JSON.stringify(this.products));
+			}
+
+			catch {
+				console.error('Algo Malio Sal');
+			}
+		}
 	}
 
 	unlinkFile = async () => {
@@ -90,7 +61,7 @@ class ProductManager {
 
 		try {
 
-			let products = await fs.promises.readFile(this.path,format)
+			let products = await fs.promises.readFile(this.path, format)
 
 			console.log(products);
 			return products;
